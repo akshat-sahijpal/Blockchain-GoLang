@@ -2,7 +2,6 @@ package main
 
 import (
 	"digicoin/blocks"
-	"digicoin/cnsenses"
 	"fmt"
 )
 
@@ -16,5 +15,4 @@ func main() {
 	for _, u := range blockChain.Blocks {
 		fmt.Printf("\n%s, %s, %s\n", u.Hash, u.Data, u.PrevHash)
 	}
-	cnsenses.ProofWork()
 }

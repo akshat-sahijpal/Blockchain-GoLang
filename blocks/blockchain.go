@@ -5,7 +5,7 @@ import (
 	"crypto/sha256"
 )
 
-// Block ////////////////////////////////// Single Block ///////////////////////////////////////////////
+// Block Structure
 type Block struct {
 	Hash     []byte `json:"hash"`      // Hash of current block
 	PrevHash []byte `json:"prev_hash"` // Hash of prev block
@@ -31,9 +31,7 @@ func initBlock(blockData, prevHash []byte) *Block {
 	return bloc
 }
 
-// Block ////////////////////////////////// Single Block ///////////////////////////////////////////////
-
-// BlockChain /////////////////////////////////////// Chain ////////////////////////////////////////////
+// BlockChain
 
 type BlockChain struct { // BlockChain is Basically Blocks Linked Together
 	Blocks []*Block // Array of block pointers
@@ -44,8 +42,6 @@ func (blockChain *BlockChain) AddBlock(data string) {
 	var currentBlock *Block = initBlock([]byte(data), prevBlock.Hash)  // Creates A New Block
 	blockChain.Blocks = append(blockChain.Blocks, currentBlock)
 }
-
-/// BlockChain ////////////////////////////////////// Chain /// ///////////////////////////////////////
 
 // GenesisBlock This block is the first block in the chain
 func GenesisBlock() *Block {
