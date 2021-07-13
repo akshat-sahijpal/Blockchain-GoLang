@@ -10,6 +10,7 @@ type Block struct {
 	Hash     []byte `json:"hash"`      // Hash of current block
 	PrevHash []byte `json:"prev_hash"` // Hash of prev block
 	Data     []byte `json:"data"`      // data of current block
+	Nonce    int
 }
 
 // GenerateHash Hash of current block = PrevHash + Hash(Data)
@@ -26,8 +27,13 @@ func initBlock(blockData, prevHash []byte) *Block {
 		Hash:     []byte{},
 		PrevHash: prevHash,
 		Data:     blockData,
+		Nonce:    0,
 	}
-	bloc.GenerateHash() // Appends Hash Value to Current Block
+	// Running Consensus Algo (Proof Of Work	)
+	pow := POW(bloc)
+	nonce, hash := pow.Compute()
+	bloc.Nonce = nonce
+	bloc.Hash = hash
 	return bloc
 }
 
