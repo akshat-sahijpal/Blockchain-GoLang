@@ -3,7 +3,7 @@ package cnsensus
 import (
 	"bytes"
 	"digicoin/blocks"
-	"encoding/binary"
+	"digicoin/util"
 	"math/big"
 )
 
@@ -16,7 +16,7 @@ Nonce should be such that, the first few bytes of hash contains 0 (REQUIRED)
 
 const (
 	difficulty = 10
-	hashBytes  = 256
+	hashBytes  = 256 // SHA-256
 )
 
 type proofOfWork struct {
@@ -35,16 +35,16 @@ func pow(block *blocks.Block) *proofOfWork {
 	   targ gets a very very big int
 	*/
 	targ = targ.Lsh(targ, uint(hashBytes-difficulty)) // Left Shift Operation
-
 	return &proofOfWork{
 		block:        block,
 		targetOfWork: targ,
 	}
 }
-func toHex(n int64) []byte {
-	buffer := new(bytes.Buffer) // *Buffer: Will Store binary
-	if err := binary.Write(buffer, binary.BigEndian, n); err != nil {
-		panic("Error in :toHex")
-	} // Writes n into buffer in binary representation
-	return buffer.Bytes()
+func (prfWork *proofOfWork) genBlockData(nonce int) []byte {
+	return bytes.Join([][]byte{
+		prfWork.block.PrevHash,
+		prfWork.block.Data,
+		util.ToHex(int64(nonce)),
+		util.ToHex(int64(difficulty)),
+	}, []byte{})
 }
